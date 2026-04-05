@@ -1,0 +1,204 @@
+/**
+ * Wolf — Formkite theme
+ * Cool slate grays with an icy blue accent. Minimal and sharp.
+ *
+ * Usage (optional):
+ *   import "@formkite/react/themes/wolf.css";
+ *
+ * Override tokens to customise:
+ *   .formkite { --fk-accent: #0ea5e9; }
+ */
+
+.formkite {
+  --fk-accent: #38bdf8;
+  --fk-accent-hover: #0ea5e9;
+  --fk-accent-fg: #0c1a26;
+  --fk-danger: #f43f5e;
+  --fk-success: #34d399;
+  --fk-border: #cbd5e1;
+  --fk-border-focus: var(--fk-accent);
+  --fk-bg: #f8fafc;
+  --fk-bg-subtle: #f1f5f9;
+  --fk-text: #0f172a;
+  --fk-text-muted: #64748b;
+  --fk-radius: 0.25rem;
+  --fk-font: inherit;
+  --fk-shadow-focus: 0 0 0 3px color-mix(in srgb, var(--fk-accent) 25%, transparent);
+
+  font-family: var(--fk-font);
+  color: var(--fk-text);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formkite-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--fk-text);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.formkite-progress {
+  font-size: 0.75rem;
+  color: var(--fk-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.formkite-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formkite-step-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fk-text);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.formkite-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formkite-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--fk-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formkite-required {
+  color: var(--fk-danger);
+  margin-left: 0.2rem;
+}
+
+.formkite-input,
+.formkite-textarea,
+.formkite-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: var(--fk-font);
+  color: var(--fk-text);
+  background: var(--fk-bg);
+  border: 1.5px solid var(--fk-border);
+  border-radius: var(--fk-radius);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.formkite-input::placeholder,
+.formkite-textarea::placeholder {
+  color: var(--fk-text-muted);
+}
+
+.formkite-input:focus,
+.formkite-textarea:focus,
+.formkite-select:focus {
+  outline: none;
+  border-color: var(--fk-border-focus);
+  box-shadow: var(--fk-shadow-focus);
+}
+
+.formkite-textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.formkite-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.formkite-checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--fk-border);
+  border-radius: 0.2rem;
+  accent-color: var(--fk-accent);
+  cursor: pointer;
+}
+
+.formkite-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.formkite-btn-back,
+.formkite-btn-next,
+.formkite-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--fk-font);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--fk-radius);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
+  border: none;
+}
+
+.formkite-btn-back {
+  background: var(--fk-bg);
+  color: var(--fk-text-muted);
+  border: 1.5px solid var(--fk-border);
+}
+
+.formkite-btn-back:hover {
+  background: var(--fk-bg-subtle);
+}
+
+.formkite-btn-next,
+.formkite-btn-submit {
+  background: var(--fk-accent);
+  color: var(--fk-accent-fg);
+  margin-left: auto;
+}
+
+.formkite-btn-next:hover,
+.formkite-btn-submit:hover {
+  background: var(--fk-accent-hover);
+}
+
+.formkite-btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.formkite-loading {
+  font-size: 0.875rem;
+  color: var(--fk-text-muted);
+}
+
+.formkite-error {
+  font-size: 0.875rem;
+  color: var(--fk-danger);
+}
+
+.formkite-success {
+  font-size: 0.875rem;
+  color: var(--fk-success);
+}

@@ -1,0 +1,201 @@
+/**
+ * Orca — Formkite theme
+ * High-contrast black and white with a teal pop. Bold and clean.
+ *
+ * Usage (optional):
+ *   import "@formkite/react/themes/orca.css";
+ *
+ * Override tokens to customise:
+ *   .formkite { --fk-accent: #0d9488; }
+ */
+
+.formkite {
+  --fk-accent: #0d9488;
+  --fk-accent-hover: #0f766e;
+  --fk-accent-fg: #ffffff;
+  --fk-danger: #e11d48;
+  --fk-success: #059669;
+  --fk-border: #e5e7eb;
+  --fk-border-focus: var(--fk-accent);
+  --fk-bg: #ffffff;
+  --fk-bg-subtle: #f3f4f6;
+  --fk-text: #000000;
+  --fk-text-muted: #6b7280;
+  --fk-radius: 0;
+  --fk-font: inherit;
+  --fk-shadow-focus: 0 0 0 2px var(--fk-accent);
+
+  font-family: var(--fk-font);
+  color: var(--fk-text);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formkite-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--fk-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.formkite-progress {
+  font-size: 0.75rem;
+  color: var(--fk-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.formkite-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formkite-step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--fk-text);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.formkite-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formkite-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--fk-text);
+}
+
+.formkite-required {
+  color: var(--fk-danger);
+  margin-left: 0.2rem;
+}
+
+.formkite-input,
+.formkite-textarea,
+.formkite-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: var(--fk-font);
+  color: var(--fk-text);
+  background: var(--fk-bg);
+  border: 2px solid var(--fk-text);
+  border-radius: var(--fk-radius);
+  transition:
+    border-color 0.1s,
+    box-shadow 0.1s;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.formkite-input::placeholder,
+.formkite-textarea::placeholder {
+  color: var(--fk-text-muted);
+}
+
+.formkite-input:focus,
+.formkite-textarea:focus,
+.formkite-select:focus {
+  outline: none;
+  border-color: var(--fk-border-focus);
+  box-shadow: var(--fk-shadow-focus);
+}
+
+.formkite-textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.formkite-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000000' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.formkite-checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--fk-text);
+  border-radius: 0;
+  accent-color: var(--fk-accent);
+  cursor: pointer;
+}
+
+.formkite-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.formkite-btn-back,
+.formkite-btn-next,
+.formkite-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--fk-font);
+  border-radius: var(--fk-radius);
+  cursor: pointer;
+  transition:
+    background-color 0.1s,
+    opacity 0.1s;
+  border: none;
+}
+
+.formkite-btn-back {
+  background: var(--fk-bg);
+  color: var(--fk-text);
+  border: 2px solid var(--fk-text);
+}
+
+.formkite-btn-back:hover {
+  background: var(--fk-bg-subtle);
+}
+
+.formkite-btn-next,
+.formkite-btn-submit {
+  background: var(--fk-text);
+  color: var(--fk-bg);
+  margin-left: auto;
+}
+
+.formkite-btn-next:hover,
+.formkite-btn-submit:hover {
+  background: var(--fk-accent);
+}
+
+.formkite-btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.formkite-loading {
+  font-size: 0.875rem;
+  color: var(--fk-text-muted);
+}
+
+.formkite-error {
+  font-size: 0.875rem;
+  color: var(--fk-danger);
+}
+
+.formkite-success {
+  font-size: 0.875rem;
+  color: var(--fk-success);
+}
