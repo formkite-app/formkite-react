@@ -67,7 +67,11 @@ export class FormkiteClient {
           Authorization: `Bearer ${this.apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          submission: {
+            data,
+          },
+        }),
       },
     );
     if (!res.ok) throw new Error(`Submission failed: ${res.status}`);

@@ -21,6 +21,21 @@ interface FormkiteProps {
   onError?: (error: Error) => void;
 }
 
+function validateStep(
+  step: Step,
+  values: Record<string, string>,
+): Record<string, string> {
+  const errors: Record<string, string> = {};
+  for (const field of step.fields) {
+    if (!field.required) continue;
+    const val = values[field.id] ?? "";
+    if (field.type === "checkbox" ? val !== "true" : val.trim() === "") {
+      errors[field.id] = `${field.label} is required`;
+    }
+  }
+  return errors;
+}
+
 function FieldInput({
   field,
   value,
@@ -100,11 +115,13 @@ function FieldInput({
 function StepView({
   step,
   values,
+  errors,
   onChange,
   components,
 }: {
   step: Step;
   values: Record<string, string>;
+  errors: Record<string, string>;
   onChange: (id: string, val: string) => void;
   components?: FieldComponents | undefined;
 }) {
@@ -132,6 +149,11 @@ function StepView({
             onChange={(val) => onChange(field.id, val)}
             components={components}
           />
+          {errors[field.id] && (
+            <span className="formkite-field-error text-xs text-red-500">
+              {errors[field.id]}
+            </span>
+          )}
         </div>
       ))}
     </div>
@@ -155,28 +177,51 @@ export function Formkite({
 
   const [stepIndex, setStepIndex] = useState(0);
   const [values, setValues] = useState<Record<string, string>>({});
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
 
   const isLastStep = stepIndex === steps.length - 1;
+  const currentStep = steps[stepIndex];
 
   const handleChange = (id: string, val: string) => {
     setValues((prev) => ({ ...prev, [id]: val }));
+    if (fieldErrors[id]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    }
+  };
+
+  const tryAdvance = (): boolean => {
+    if (!currentStep) return true;
+    const errors = validateStep(currentStep, values);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return false;
+    }
+    setFieldErrors({});
+    return true;
   };
 
   const handleNext = () => {
+    if (!tryAdvance()) return;
     setStepIndex((i) => Math.min(i + 1, steps.length - 1));
   };
 
   const handleBack = () => {
+    setFieldErrors({});
     setStepIndex((i) => Math.max(i - 1, 0));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isLastStep) {
-      handleNext();
-      return;
-    }
+    if (!isLastStep) handleNext();
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!tryAdvance()) return;
     try {
       const result = await submit(values);
       setSubmitted(true);
@@ -210,10 +255,8 @@ export function Formkite({
     );
   }
 
-  const currentStep = steps[stepIndex];
-
   return (
-    <form onSubmit={handleSubmit} className="formkite space-y-6">
+    <form onSubmit={handleFormSubmit} className="formkite space-y-6">
       {form?.name && (
         <h1 className="formkite-title text-xl font-bold text-gray-900">
           {form.name}
@@ -230,6 +273,7 @@ export function Formkite({
         <StepView
           step={currentStep}
           values={values}
+          errors={fieldErrors}
           onChange={handleChange}
           components={components}
         />
@@ -255,7 +299,8 @@ export function Formkite({
           </button>
         ) : (
           <button
-            type="submit"
+            type="button"
+            onClick={handleFinalSubmit}
             disabled={submitting}
             className="formkite-btn-submit ml-auto rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
           >
