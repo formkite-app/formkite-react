@@ -1,12 +1,11 @@
-import { defineConfig } from 'tsdown'
-import { copyFileSync, mkdirSync, existsSync } from 'fs'
+import { defineConfig } from "tsdown";
+import { copyFileSync, mkdirSync, existsSync } from "fs";
 
 export default defineConfig({
-  platform: 'neutral',
+  platform: "neutral",
   dts: true,
-  exports: true,
   async onSuccess() {
-    if (!existsSync('dist')) mkdirSync('dist')
-    copyFileSync('src/themes/formkite.css', 'dist/formkite.css')
+    if (!existsSync("dist")) mkdirSync("dist");
+    copyFileSync("src/themes/formkite.css", "dist/formkite.css");
   },
-})
+});
