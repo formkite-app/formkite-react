@@ -1,8 +1,8 @@
 {
   "name": "@formkite/react",
   "type": "module",
-  "version": "0.0.2",
-  "description": "A starter for creating a React component library.",
+  "version": "0.0.3",
+  "description": "A React SDK for building dynamic forms powered by Formkite schemas.",
   "author": "Ethan Moffat <ethan@formkite.com>",
   "license": "MIT",
   "homepage": "https://github.com/formkite-app/react#readme",
