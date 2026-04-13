@@ -1,7 +1,7 @@
 {
   "name": "@formkite/react",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A React SDK for building dynamic forms powered by Formkite schemas.",
   "author": "Ethan Moffat <ethan@formkite.com>",
   "license": "MIT",
@@ -15,7 +15,8 @@
   },
   "exports": {
     ".": "./dist/index.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./src/themes/formkite.css": "./src/themes/formkite.css"
   },
   "files": [
     "dist",
