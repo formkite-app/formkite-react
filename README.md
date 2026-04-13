@@ -2,6 +2,21 @@
 
 React form library for building forms powered by FormKite.
 
+## Index
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Hooks API](#hooks-api)
+  - [useFormKite](#useformkite)
+  - [useFormKiteSchema](#useformkiteschema)
+  - [useFormKiteSubmit](#useformkitesubmit)
+  - [useFormKiteBuilder](#useformkitebuilder)
+  - [useFormKiteResponse](#useformkiteresponse)
+- [Options](#options)
+- [Development](#development)
+- [Themes](#themes)
+- [Custom Components](#custom-components)
+
 ## Installation
 
 ```bash
