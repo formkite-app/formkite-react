@@ -2,6 +2,8 @@
 
 React form library for building forms powered by FormKite.
 
+Website: https://formkite.com
+
 ## Index
 
 - [Installation](#installation)
@@ -20,13 +22,13 @@ React form library for building forms powered by FormKite.
 ## Installation
 
 ```bash
-npm install formkite
+npm install @formkite/react
 ```
 
 ## Usage
 
 ```tsx
-import { Formkite } from "formkite";
+import { Formkite } from "@formkite/react";
 
 export default function MyForm() {
   return (
@@ -107,7 +109,7 @@ All hooks accept these options:
 |------|------|---------|
 | `formId` | `string` | Required |
 | `publishableKey` | `string` | Required |
-| `baseUrl` | `string` | `https://formkite.com` |
+| `baseUrl` | `string` | `https://api.formkite.com` |
 | `version` | `string` | `"v1"` |
 
 ## Development
@@ -132,7 +134,7 @@ All hooks accept these options:
 You can override the default field components by passing a `components` prop to `Formkite`. Components are keyed by field type (`"input"`, `"textarea"`, `"dropdown"`, `"checkbox"`).
 
 ```tsx
-import { Formkite, type FieldComponentProps } from "formkite";
+import { Formkite, type FieldComponentProps } from "@formkite/react";
 
 function CustomInput({ field, value, onChange }: FieldComponentProps) {
   return (
