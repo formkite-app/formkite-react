@@ -1,7 +1,7 @@
 {
   "name": "@formkite/react",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A starter for creating a React component library.",
   "author": "Ethan Moffat <ethan@formkite.com>",
   "license": "MIT",
@@ -18,7 +18,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/themes"
   ],
   "publishConfig": {
     "access": "public"
