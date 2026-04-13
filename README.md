@@ -111,3 +111,48 @@ All hooks accept these options:
 | `wolf.css` | Cool slate grays, uppercase labels, minimal and sharp |
 | `mantis.css` | Lush greens, soft sage backgrounds, organic feel |
 | `orca.css` | High-contrast black/white with teal accents, bold borders, no radius |
+
+## Custom Components
+
+You can override the default field components by passing a `components` prop to `Formkite`. Components are keyed by field type (`"input"`, `"textarea"`, `"dropdown"`, `"checkbox"`).
+
+```tsx
+import { Formkite, type FieldComponentProps } from "formkite";
+
+function CustomInput({ field, value, onChange }: FieldComponentProps) {
+  return (
+    <div className="custom-input-wrapper">
+      <input
+        id={field.id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={field.placeholder}
+        required={field.required}
+        className="my-custom-input"
+      />
+      <span className="input-hint">Enter your {field.label.toLowerCase()}</span>
+    </div>
+  );
+}
+
+export default function MyForm() {
+  return (
+    <Formkite
+      formId="your-form-id"
+      publishableKey="pk_xxx"
+      components={{
+        input: CustomInput,
+        textarea: CustomTextArea,
+      }}
+    />
+  );
+}
+```
+
+### FieldComponentProps
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `field` | `Field` | The field definition from the form schema |
+| `value` | `string` | Current field value |
+| `onChange` | `(val: string) => void` | Callback to update the field value |
