@@ -43,7 +43,7 @@ export class FormkiteClient {
 
   constructor(config: FormkiteConfig) {
     this.apiKey = config.apiKey;
-    this.baseUrl = config.baseUrl || "https://api.formkite.com";
+    this.baseUrl = config.baseUrl || "https://formkite.com";
     this.version = config.version || "v1";
   }
 
