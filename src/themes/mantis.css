@@ -6,10 +6,10 @@
  *   import "@formkite/react/themes/mantis.css";
  *
  * Override tokens to customise:
- *   .formkite { --fk-accent: #16a34a; }
+ *   .formkite.fk-theme-mantis { --fk-accent: #16a34a; }
  */
 
-.formkite {
+.formkite.fk-theme-mantis {
   --fk-accent: #16a34a;
   --fk-accent-hover: #15803d;
   --fk-accent-fg: #ffffff;
@@ -32,7 +32,23 @@
   gap: 1.25rem;
 }
 
-.formkite-title {
+/* ── Layout ─────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fk-theme-mantis .formkite-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Title ──────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-title {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.3;
@@ -40,45 +56,99 @@
   margin: 0;
 }
 
-.formkite-progress {
-  font-size: 0.75rem;
-  color: var(--fk-text-muted);
-  letter-spacing: 0.03em;
-}
+/* ── Progress ───────────────────────────────────────────── */
 
-.formkite-step {
+.fk-theme-mantis .formkite-progress {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.formkite-step-title {
-  font-size: 1rem;
+.fk-theme-mantis .formkite-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--fk-text-muted);
+  font-weight: 600;
+}
+
+.fk-theme-mantis .formkite-progress-bar {
+  height: 6px;
+  background: var(--fk-bg-subtle);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.fk-theme-mantis .formkite-progress-fill {
+  height: 100%;
+  background: var(--fk-accent);
+  transition: width 0.3s ease;
+}
+
+/* ── Step ───────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fk-theme-mantis .formkite-step-title {
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--fk-text);
-  margin: 0 0 0.25rem;
+  margin: 0;
 }
 
-.formkite-field {
+/* ── Fields ─────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fk-theme-mantis .formkite-field {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
-.formkite-label {
+.fk-theme-mantis .formkite-label {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--fk-text);
 }
 
-.formkite-required {
+.fk-theme-mantis .formkite-required {
   color: var(--fk-danger);
   margin-left: 0.2rem;
 }
 
-.formkite-input,
-.formkite-textarea,
-.formkite-select {
+.fk-theme-mantis .formkite-field-error {
+  font-size: 0.75rem;
+  color: var(--fk-danger);
+  margin-top: 0.25rem;
+}
+
+.fk-theme-mantis .formkite-field--error .formkite-input,
+.fk-theme-mantis .formkite-field--error .formkite-textarea,
+.fk-theme-mantis .formkite-field--error .formkite-select {
+  border-color: var(--fk-danger);
+}
+
+.fk-theme-mantis .formkite-field--error .formkite-input:focus,
+.fk-theme-mantis .formkite-field--error .formkite-textarea:focus,
+.fk-theme-mantis .formkite-field--error .formkite-select:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--fk-danger) 20%, transparent);
+}
+
+/* ── Inputs ─────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-input,
+.fk-theme-mantis .formkite-textarea,
+.fk-theme-mantis .formkite-select {
   width: 100%;
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
@@ -94,25 +164,25 @@
   box-sizing: border-box;
 }
 
-.formkite-input::placeholder,
-.formkite-textarea::placeholder {
+.fk-theme-mantis .formkite-input::placeholder,
+.fk-theme-mantis .formkite-textarea::placeholder {
   color: var(--fk-text-muted);
 }
 
-.formkite-input:focus,
-.formkite-textarea:focus,
-.formkite-select:focus {
+.fk-theme-mantis .formkite-input:focus,
+.fk-theme-mantis .formkite-textarea:focus,
+.fk-theme-mantis .formkite-select:focus {
   outline: none;
   border-color: var(--fk-border-focus);
   box-shadow: var(--fk-shadow-focus);
 }
 
-.formkite-textarea {
+.fk-theme-mantis .formkite-textarea {
   min-height: 5rem;
   resize: vertical;
 }
 
-.formkite-select {
+.fk-theme-mantis .formkite-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234b7a5a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
@@ -120,7 +190,7 @@
   background-color: #ffffff;
 }
 
-.formkite-checkbox {
+.fk-theme-mantis .formkite-checkbox {
   width: 1rem;
   height: 1rem;
   border: 1px solid var(--fk-border);
@@ -129,17 +199,19 @@
   cursor: pointer;
 }
 
-.formkite-actions {
+/* ── Actions ────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.25rem;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
 }
 
-.formkite-btn-back,
-.formkite-btn-next,
-.formkite-btn-submit {
+.fk-theme-mantis .formkite-btn-back,
+.fk-theme-mantis .formkite-btn-next,
+.fk-theme-mantis .formkite-btn-submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,48 +223,121 @@
   cursor: pointer;
   transition:
     background-color 0.15s,
-    opacity 0.15s;
+    opacity 0.15s,
+    transform 0.1s;
   border: none;
 }
 
-.formkite-btn-back {
+.fk-theme-mantis .formkite-btn-back {
   background: #ffffff;
   color: var(--fk-text-muted);
   border: 1px solid var(--fk-border);
 }
 
-.formkite-btn-back:hover {
+.fk-theme-mantis .formkite-btn-back:hover {
   background: var(--fk-bg-subtle);
 }
 
-.formkite-btn-next,
-.formkite-btn-submit {
+.fk-theme-mantis .formkite-btn-next,
+.fk-theme-mantis .formkite-btn-submit {
   background: var(--fk-accent);
   color: var(--fk-accent-fg);
   margin-left: auto;
 }
 
-.formkite-btn-next:hover,
-.formkite-btn-submit:hover {
+.fk-theme-mantis .formkite-btn-next:hover,
+.fk-theme-mantis .formkite-btn-submit:hover {
   background: var(--fk-accent-hover);
 }
 
-.formkite-btn-submit:disabled {
+.fk-theme-mantis .formkite-btn-next:active,
+.fk-theme-mantis .formkite-btn-submit:active {
+  transform: translateY(1px);
+}
+
+.fk-theme-mantis .formkite-btn-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.formkite-loading {
-  font-size: 0.875rem;
+/* ── States ─────────────────────────────────────────────── */
+
+.fk-theme-mantis .formkite-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
   color: var(--fk-text-muted);
 }
 
-.formkite-error {
-  font-size: 0.875rem;
-  color: var(--fk-danger);
+.fk-theme-mantis .formkite-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--fk-bg-subtle);
+  border-top-color: var(--fk-accent);
+  border-radius: 50%;
+  animation: formkite-spinner 0.8s linear infinite;
 }
 
-.formkite-success {
-  font-size: 0.875rem;
+@keyframes formkite-spinner {
+  to { transform: rotate(360deg); }
+}
+
+.fk-theme-mantis .formkite-success-container,
+.fk-theme-mantis .formkite-error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  gap: 1rem;
+  animation: formkite-fade-in 0.4s ease-out;
+}
+
+.fk-theme-mantis .formkite-success-icon-bg {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: color-mix(in srgb, var(--fk-success) 10%, transparent);
   color: var(--fk-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+.fk-theme-mantis .formkite-success-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.fk-theme-mantis .formkite-success-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--fk-text);
+  margin: 0;
+}
+
+.fk-theme-mantis .formkite-success-message,
+.fk-theme-mantis .formkite-error-message {
+  font-size: 0.875rem;
+  color: var(--fk-text-muted);
+  max-width: 320px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.fk-theme-mantis .formkite-error-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  color: var(--fk-danger);
+  margin-bottom: 0.5rem;
+}
+
+@keyframes formkite-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

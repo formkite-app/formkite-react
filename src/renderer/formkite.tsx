@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormKite } from "../use-form-kite";
 import type { Field, Step } from "../client";
 
@@ -12,13 +12,20 @@ export type FieldComponents = Partial<
   Record<string, React.ComponentType<FieldComponentProps>>
 >;
 
-interface FormkiteProps {
+export interface FormkiteProps {
   formId: string;
   publishableKey: string;
   baseUrl?: string;
   components?: FieldComponents;
   onSuccess?: (result: unknown) => void;
   onError?: (error: Error) => void;
+  onPageChange?: (page: number) => void;
+  onStepChange?: (step: Step) => void;
+  onStarted?: () => void;
+  onCompleted?: (values: Record<string, string>) => void;
+  theme?: "fox" | "mantis" | "orca" | "oscar" | "raven" | "wolf" | string;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 function validateStep(
@@ -50,9 +57,6 @@ function FieldInput({
   const Custom = components?.[field.type];
   if (Custom) return <Custom field={field} value={value} onChange={onChange} />;
 
-  const base =
-    "formkite-input w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
-
   switch (field.type) {
     case "textarea":
       return (
@@ -62,7 +66,7 @@ function FieldInput({
           required={field.required}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`formkite-textarea w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px]`}
+          className="formkite-textarea"
         />
       );
     case "dropdown":
@@ -72,7 +76,7 @@ function FieldInput({
           required={field.required}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`formkite-select ${base}`}
+          className="formkite-select"
         >
           <option value="">{field.placeholder || "Select..."}</option>
           {field.options.map((opt) => (
@@ -90,7 +94,7 @@ function FieldInput({
           required={field.required}
           checked={value === "true"}
           onChange={(e) => onChange(e.target.checked ? "true" : "false")}
-          className="formkite-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className="formkite-checkbox"
         />
       );
     default: {
@@ -105,7 +109,7 @@ function FieldInput({
           required={field.required}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={base}
+          className="formkite-input"
         />
       );
     }
@@ -126,36 +130,33 @@ function StepView({
   components?: FieldComponents | undefined;
 }) {
   return (
-    <div className="formkite-step space-y-4">
-      {step.title && (
-        <h2 className="formkite-step-title text-lg font-semibold text-gray-800">
-          {step.title}
-        </h2>
-      )}
-      {step.fields.map((field) => (
-        <div key={field.id} className="formkite-field flex flex-col gap-1">
-          <label
-            htmlFor={field.id}
-            className="formkite-label text-sm font-medium text-gray-700"
-          >
-            {field.label}
-            {field.required && (
-              <span className="formkite-required ml-1 text-red-500">*</span>
-            )}
-          </label>
-          <FieldInput
-            field={field}
-            value={values[field.id] ?? ""}
-            onChange={(val) => onChange(field.id, val)}
-            components={components}
-          />
-          {errors[field.id] && (
-            <span className="formkite-field-error text-xs text-red-500">
-              {errors[field.id]}
-            </span>
-          )}
-        </div>
-      ))}
+    <div className="formkite-step">
+      {step.title && <h2 className="formkite-step-title">{step.title}</h2>}
+      <div className="formkite-fields">
+        {step.fields.map((field) => {
+          const hasError = !!errors[field.id];
+          return (
+            <div
+              key={field.id}
+              className={`formkite-field ${hasError ? "formkite-field--error" : ""}`}
+            >
+              <label htmlFor={field.id} className="formkite-label">
+                {field.label}
+                {field.required && <span className="formkite-required">*</span>}
+              </label>
+              <FieldInput
+                field={field}
+                value={values[field.id] ?? ""}
+                onChange={(val) => onChange(field.id, val)}
+                components={components}
+              />
+              {hasError && (
+                <span className="formkite-field-error">{errors[field.id]}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -167,6 +168,13 @@ export function Formkite({
   components,
   onSuccess,
   onError,
+  onPageChange,
+  onStepChange,
+  onStarted,
+  onCompleted,
+  theme,
+  className,
+  style,
 }: FormkiteProps) {
   const { form, steps, loading, error, submitting, submit } = useFormKite({
     formId,
@@ -179,6 +187,12 @@ export function Formkite({
   const [values, setValues] = useState<Record<string, string>>({});
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!loading && form && onStarted) {
+      onStarted();
+    }
+  }, [loading, form, onStarted]);
 
   const isLastStep = stepIndex === steps.length - 1;
   const currentStep = steps[stepIndex];
@@ -207,12 +221,22 @@ export function Formkite({
 
   const handleNext = () => {
     if (!tryAdvance()) return;
-    setStepIndex((i) => Math.min(i + 1, steps.length - 1));
+    const nextIndex = Math.min(stepIndex + 1, steps.length - 1);
+    if (nextIndex !== stepIndex) {
+      setStepIndex(nextIndex);
+      onPageChange?.(nextIndex);
+      onStepChange?.(steps[nextIndex]);
+    }
   };
 
   const handleBack = () => {
     setFieldErrors({});
-    setStepIndex((i) => Math.max(i - 1, 0));
+    const nextIndex = Math.max(stepIndex - 1, 0);
+    if (nextIndex !== stepIndex) {
+      setStepIndex(nextIndex);
+      onPageChange?.(nextIndex);
+      onStepChange?.(steps[nextIndex]);
+    }
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -226,65 +250,123 @@ export function Formkite({
       const result = await submit(values);
       setSubmitted(true);
       onSuccess?.(result);
+      onCompleted?.(values);
     } catch (err) {
       onError?.(err as Error);
     }
   };
 
+  const containerClass = [
+    "formkite",
+    theme && `fk-theme-${theme}`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   if (loading) {
     return (
-      <div className="formkite-loading text-sm text-gray-500">
-        Loading form...
+      <div className={containerClass} style={style}>
+        <div className="formkite-loading">
+          <div className="formkite-spinner" />
+          <span>Loading form...</span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="formkite-error text-sm text-red-600">
-        Failed to load form: {error.message}
+      <div className={containerClass} style={style}>
+        <div className="formkite-error-container">
+          <svg
+            className="formkite-error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <div className="formkite-error-message">
+            Failed to load form: {error.message}
+          </div>
+        </div>
       </div>
     );
   }
 
   if (submitted) {
     return (
-      <div className="formkite-success text-sm text-green-600">
-        {form?.end_message ?? "Your response has been submitted. Thank you!"}
+      <div className={containerClass} style={style}>
+        <div className="formkite-success-container">
+          <div className="formkite-success-icon-bg">
+            <svg
+              className="formkite-success-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <h2 className="formkite-success-title">Thank you!</h2>
+          <p className="formkite-success-message">
+            {form?.end_message ?? "Your response has been submitted."}
+          </p>
+        </div>
       </div>
     );
   }
 
+  const progress =
+    steps.length > 0 ? ((stepIndex + 1) / steps.length) * 100 : 0;
+
   return (
-    <form onSubmit={handleFormSubmit} className="formkite space-y-6">
-      {form?.name && (
-        <h1 className="formkite-title text-xl font-bold text-gray-900">
-          {form.name}
-        </h1>
-      )}
+    <form onSubmit={handleFormSubmit} className={containerClass} style={style}>
+      <header className="formkite-header">
+        {form?.name && <h1 className="formkite-title">{form.name}</h1>}
+        {steps.length > 1 && (
+          <div className="formkite-progress">
+            <div className="formkite-progress-info">
+              <span className="formkite-progress-step">
+                Step {stepIndex + 1} of {steps.length}
+              </span>
+              <span className="formkite-progress-percent">
+                {Math.round(progress)}%
+              </span>
+            </div>
+            <div className="formkite-progress-bar">
+              <div
+                className="formkite-progress-fill"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
+      </header>
 
-      {steps.length > 1 && (
-        <div className="formkite-progress text-xs text-gray-400">
-          Step {stepIndex + 1} of {steps.length}
-        </div>
-      )}
+      <div className="formkite-body">
+        {currentStep && (
+          <StepView
+            step={currentStep}
+            values={values}
+            errors={fieldErrors}
+            onChange={handleChange}
+            components={components}
+          />
+        )}
+      </div>
 
-      {currentStep && (
-        <StepView
-          step={currentStep}
-          values={values}
-          errors={fieldErrors}
-          onChange={handleChange}
-          components={components}
-        />
-      )}
-
-      <div className="formkite-actions flex justify-between gap-2">
+      <footer className="formkite-actions">
         {stepIndex > 0 && (
           <button
             type="button"
             onClick={handleBack}
-            className="formkite-btn-back rounded px-4 py-2 text-sm text-gray-600 border border-gray-300 hover:bg-gray-50"
+            className="formkite-btn-back"
           >
             Back
           </button>
@@ -293,7 +375,7 @@ export function Formkite({
           <button
             type="button"
             onClick={handleNext}
-            className="formkite-btn-next ml-auto rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+            className="formkite-btn-next"
           >
             Next
           </button>
@@ -302,12 +384,12 @@ export function Formkite({
             type="button"
             onClick={handleFinalSubmit}
             disabled={submitting}
-            className="formkite-btn-submit ml-auto rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+            className="formkite-btn-submit"
           >
             {submitting ? "Submitting..." : "Submit"}
           </button>
         )}
-      </div>
+      </footer>
     </form>
   );
 }
